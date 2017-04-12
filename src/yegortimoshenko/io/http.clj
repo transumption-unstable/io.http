@@ -1,4 +1,4 @@
-(ns yegortimoshenko.http
+(ns yegortimoshenko.io.http
   (:require [clojure.java.io :as io]
             [clojure.string :as str])
   (:import [java.net HttpCookie HttpURLConnection URL URLEncoder]
