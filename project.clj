@@ -1,7 +1,7 @@
-(defproject com.yegortimoshenko/io.http "20170425.114348"
+(defproject com.yegortimoshenko/io.http "20170425.115747"
   :dependencies [[org.clojure/clojure "1.9.0-alpha15"]]
   :deploy-repositories {"sonatype" {:creds :gpg :url "https://oss.sonatype.org/service/local/staging/deploy/maven2"}}
-  :description "DEPRECATED: moved to Maven Central"
+  :description "HTTP/1.1 client based on HttpURLConnection"
   :license {:name "Internet Systems Consortium License"
             :url "https://github.com/yegortimoshenko/io.http/blob/master/LICENSE"}
   :plugins [[lein-stamp "20170312.223701"]]
