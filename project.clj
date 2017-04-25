@@ -1,4 +1,4 @@
-(defproject com.yegortimoshenko/io.http "20170425.075637"
+(defproject com.yegortimoshenko/io.http "20170425.114348"
   :dependencies [[org.clojure/clojure "1.9.0-alpha15"]]
   :deploy-repositories {"sonatype" {:creds :gpg :url "https://oss.sonatype.org/service/local/staging/deploy/maven2"}}
   :description "DEPRECATED: moved to Maven Central"

@@ -29,6 +29,22 @@
     #(instance? Reader %)
     #(gen/fmap (fn [s] (CharArrayReader. (.toCharArray s))) (gen/string))))
 
+(s/def ::headers (s/map-of keyword? (s/coll-of string?)))
+
+(s/def ::url
+  (s/with-gen
+    (s/and (s/or :string string? :url #(instance? URL %))
+           (s/conformer
+            (fn [[k x]]
+              (case k
+                :string (try (URL. x) (catch MalformedURLException _ ::s/invalid))
+                :url x)))
+           #(contains? #{"http" "https"} (.getProtocol %))
+           #(not (str/blank? (.getHost %))))
+    #(gen/fmap
+      (fn [[url path]] (str/join \/ (cons url path)))
+      (gen/tuple (s/gen alexa-top) (gen/list (gen/string-alphanumeric))))))
+
 (defn ^:private shorthand [s]
   (let [ns (symbol (str *ns* \. s))]
     (create-ns ns)
@@ -44,10 +60,6 @@
         :reader ::reader
         :string string?))
 
-(s/def ::header-name
-  (s/and string? (comp not str/blank?) (partial not-any? #{\:})))
-
-(s/def ::request/headers (s/map-of ::header-name (s/coll-of string?)))
 (s/def ::request/method #{:GET :POST :HEAD :OPTIONS :PUT :DELETE :TRACE})
 
 (def ^:private alexa-top
@@ -65,38 +77,18 @@
     "https://www.instagram.com"
     "https://yandex.ru"})
 
-(s/def ::request/url
-  (s/with-gen
-    (s/and (s/conformer #(try (URL. (str %)) (catch MalformedURLException _ ::s/invalid)))
-           #(contains? #{"http" "https"} (.getProtocol %))
-           #(not (str/blank? (.getHost %))))
-    #(gen/fmap
-      (fn [[url path]] (str/join \/ (cons url path)))
-      (gen/tuple (s/gen alexa-top) (gen/list (gen/string-alphanumeric))))))
-
 (s/def ::request
-  (s/and (s/keys :req-un [::request/url]
-                 :opt-un [::request/body ::request/headers ::request/method])
-         #(not (and (:body %) (contains? #{:GET :HEAD :TRACE nil} (:method %))))))
+  (s/and (s/keys :opt-un [::request/body ::headers ::request/method])
+         #(not (and (:body %) (contains? #{:GET :HEAD :TRACE} (:method %))))))
 
 (shorthand 'response)
 
 (s/def ::response/body ::input-stream)
-
-(s/def ::response/headers
-  (s/with-gen
-    (s/and (s/conformer (partial map (fn [[k v]] [k (vec v)])))
-           (s/every-kv (s/nilable ::header-name) (s/coll-of string?)))
-    #(gen/fmap (fn [m] (Collections/unmodifiableMap m))
-               (gen/map (s/gen ::header-field)
-                        (gen/fmap (fn [v] (Collections/unmodifiableList v))
-                                  (gen/vector (gen/string-ascii)))))))
-
 (s/def ::response/status (s/int-in 100 600))
-(s/def ::response (s/keys :req-un [::response/body ::response/headers ::request ::response/status]))
+(s/def ::response (s/keys :req-un [::response/body ::headers ::response/status]))
 
 (s/fdef http/request
-  :args (s/cat :request ::request)
+  :args (s/cat :request (s/? ::request) :url ::url)
   :ret ::response)
 
 (s/def ::cookie
@@ -109,7 +101,7 @@
 (s/def ::cookies (s/coll-of ::cookie))
 
 (s/fdef http/>cookies
-  :args (s/cat :request ::request :cookies ::cookies)
+  :args (s/cat :request (s/? ::request) :cookies ::cookies)
   :ret ::request)
 
 (s/fdef http/<cookies
