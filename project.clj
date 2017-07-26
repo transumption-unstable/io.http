@@ -4,7 +4,8 @@
   :description "HTTP/1.1 client based on HttpURLConnection"
   :license {:name "Internet Systems Consortium License"
             :url "https://github.com/yegortimoshenko/io.http/blob/master/LICENSE"}
-  :plugins [[lein-stamp "20170312.223701"]]
+  :plugins [[autodoc/lein-autodoc "1.1.1"]
+            [lein-stamp "20170312.223701"]]
   :pom-addition [:developers
                  [:developer
                   [:name "Yegor Timoshenko"]

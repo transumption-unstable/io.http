@@ -31,6 +31,21 @@
 
 (s/def ::headers (s/map-of keyword? (s/coll-of string?)))
 
+(def ^:private alexa-top
+  #{"https://www.google.com"
+    "https://www.facebook.com"
+    "https://www.youtube.com"
+    "https://www.baidu.com"
+    "https://www.wikipedia.org"
+    "https://www.yahoo.com"
+    "https://www.reddit.com"
+    "https://www.google.co.in"
+    "https://www.amazon.com"
+    "https://www.google.co.jp"
+    "https://vk.com"
+    "https://www.instagram.com"
+    "https://yandex.ru"})
+
 (s/def ::url
   (s/with-gen
     (s/and (s/or :string string? :url #(instance? URL %))
@@ -61,21 +76,6 @@
         :string string?))
 
 (s/def ::request/method #{:GET :POST :HEAD :OPTIONS :PUT :DELETE :TRACE})
-
-(def ^:private alexa-top
-  #{"https://www.google.com"
-    "https://www.facebook.com"
-    "https://www.youtube.com"
-    "https://www.baidu.com"
-    "https://www.wikipedia.org"
-    "https://www.yahoo.com"
-    "https://www.reddit.com"
-    "https://www.google.co.in"
-    "https://www.amazon.com"
-    "https://www.google.co.jp"
-    "https://vk.com"
-    "https://www.instagram.com"
-    "https://yandex.ru"})
 
 (s/def ::request
   (s/and (s/keys :opt-un [::request/body ::headers ::request/method])
