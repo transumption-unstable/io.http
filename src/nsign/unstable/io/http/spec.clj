@@ -1,7 +1,7 @@
 (ns nsign.unstable.io.http.spec
   (:require [nsign.unstable.io.http :as http]
-            [clojure.spec :as s]
-            [clojure.spec.gen :as gen]
+            [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
             [clojure.string :as str])
   (:import (java.io ByteArrayInputStream CharArrayReader File IOException InputStream Reader)
            (java.net HttpCookie MalformedURLException URL)
