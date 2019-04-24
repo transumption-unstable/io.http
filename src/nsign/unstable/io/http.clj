@@ -1,4 +1,4 @@
-(ns yegortimoshenko.io.http
+(ns nsign.unstable.io.http
   "HTTP/1.1 client based on HttpURLConnection"
   (:require [clojure.java.io :as io]
             [clojure.string :as str])

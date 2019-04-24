@@ -1,5 +1,5 @@
-(ns yegortimoshenko.io.http.spec
-  (:require [yegortimoshenko.io.http :as http]
+(ns nsign.unstable.io.http.spec
+  (:require [nsign.unstable.io.http :as http]
             [clojure.spec :as s]
             [clojure.spec.gen :as gen]
             [clojure.string :as str])
