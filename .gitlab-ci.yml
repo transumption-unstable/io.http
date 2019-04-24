@@ -1,0 +1,10 @@
+image: nixos/nix
+
+pages:
+  stage: deploy
+  script: nix-shell --pure --run 'clj -A:codox'
+  artifacts:
+    paths:
+    - public
+  only:
+  - master

@@ -1,0 +1,2 @@
+{:aliases {:codox {:extra-deps {codox {:mvn/version "0.10.6"}}
+                   :main-opts ["-m" "nsign.unstable.io.http.tasks.codox"]}}}
