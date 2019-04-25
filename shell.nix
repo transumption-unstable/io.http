@@ -2,5 +2,5 @@
 
 stdenv.mkDerivation rec {
   name = "unstable.io.http";
-  buildInputs = [ clojure ];
+  buildInputs = [ clojure git ];
 }
